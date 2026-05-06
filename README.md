@@ -105,3 +105,150 @@ ________________________________________________________________________________
 Licencia
 
 Este proyecto es de uso educativo y puede ser utilizado como referencia o base para otros desarrollos.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+REDES
+
+
+Activa IPv6
+enable
+configure terminal
+ipv6 unicast-routing
+
+Configurar interfaz G0/0
+interface g0/0
+ipv6 address 2001:db8:1:1::1/64
+ipv6 address fe80::1 link-local
+no shutdown
+exit
+
+Configurar interfaz G0/1
+interface g0/1
+ipv6 address 2001:db8:1:2::1/64
+ipv6 address fe80::1 link-local
+no shutdown
+exit
+Configurar interfaz Serial
+
+interface s0/0/0
+ipv6 address 2001:db8:1:a001::2/64
+ipv6 address fe80::1 link-local
+no shutdown
+exit
+
+
+Verificar
+show ipv6 interface brief
+_______________________________
+
+PARTE 2: CONFIGURAR PCs Y SERVIDORES
+
+👉 Vas uno por uno:
+
+Click en PC → Desktop → IP Configuration
+
+
+
+
+RED IZQUIERDA (2001:db8:1:1::/64)
+| Dispositivo | IPv6            | Gateway |
+| ----------- | --------------- | ------- |
+| Sales       | 2001:db8:1:1::2 | fe80::1 |
+| Billing     | 2001:db8:1:1::3 | fe80::1 |
+| Accounting  | 2001:db8:1:1::4 | fe80::1 |
+
+
+
+RED DERECHA (2001:db8:1:2::/64)
+
+
+| Dispositivo | IPv6            | Gateway |
+| ----------- | --------------- | ------- |
+| Design      | 2001:db8:1:2::2 | fe80::1 |
+| Engineering | 2001:db8:1:2::3 | fe80::1 |
+| CAD         | 2001:db8:1:2::4 | fe80::1 |
+
+
+
+PARTE 3: CONFIGURAR ISP
+
+En el router ISP:
+
+enable
+configure terminal
+
+interface s0/0/0
+ipv6 address 2001:db8:1:a001::1/64
+ipv6 address fe80::1 link-local
+no shutdown
+
+
+PARTE 4: PROBAR
+1. Ping al ISP
+
+Desde cualquier PC:
+
+ping 2001:db8:1:a001::1
+
+
+
+Probar conexión entre redes
+
+Ejemplo:
+Desde Sales:
+
+ping 2001:db8:1:2::4
+
+
+
+
+
+Navegador (importante)
+
+En una PC:
+
+Desktop → Web Browser
+Probar:
+2001:db8:1:1::4
+2001:db8:1:2::4
+
+
+
